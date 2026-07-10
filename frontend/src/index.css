@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+}
+
+.list-group-item {
+  border-radius: 8px;
+}
+
+button {
+  transition: 0.3s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.badge {
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+input,
+textarea {
+  border-radius: 8px !important;
+}
+
+h2 {
+  font-weight: bold;
+}
+
+.text-muted {
+  font-size: 15px;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+  transform: scale(1.01);
+  transition: 0.2s ease;
+}
+
+.card {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
