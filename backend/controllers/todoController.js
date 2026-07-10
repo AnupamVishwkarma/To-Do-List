@@ -1,4 +1,3 @@
-const { rawListeners } = require("../models/Todo");
 const todoService = require("../services/todoService");
 
 const createTodo = async (req, res) => {
@@ -30,6 +29,9 @@ const createTodo = async (req, res) => {
       data: todo,
     });
   } catch (error) {
+
+    console.error(error);
+    
     res.status(500).json({
       success: false,
       message: error.message,
@@ -47,6 +49,9 @@ const getAllTodos = async (req, res) => {
       data: todos,
     });
   } catch (error) {
+
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: error.message,
@@ -56,6 +61,7 @@ const getAllTodos = async (req, res) => {
 
 const getTodoById = async (req, res) => {
   try{
+    // Fetch todo using id
     const todo = await todoService.getTodoById(req.params.id);
 
     if(!todo){
@@ -70,6 +76,8 @@ const getTodoById = async (req, res) => {
       data : todo,
     });
   }catch (error){
+
+    console.error(error);
 
     if(error.name === "CastError"){
       return res.status(400).json({
@@ -90,6 +98,7 @@ const updateTodo = async (req, res) => {
     const {id} = req.params;
     const {title, description} = req.body;
 
+    // Validate required fields
     if(!title || title.trim() === ""){
       return res.status(400).json({
         success : false,
@@ -104,8 +113,8 @@ const updateTodo = async (req, res) => {
       });
     }
 
-    const updateTodo = await todoService.updateTodo(id, req.body);
-    if(!updateTodo){
+    const updatedTodo = await todoService.updateTodo(id, req.body);
+    if(!updatedTodo){
       return res.status(404).json({
         success : false,
         message : "Todo not found",
@@ -115,9 +124,11 @@ const updateTodo = async (req, res) => {
     res.status(200).json({
       success : true,
       message : "Todo updated successfully",
-      data : updateTodo,
+      data : updatedTodo,
     });
   }catch (error){
+
+    console.error(error);
 
     if(error.name === "CastError"){
       return res.status(400).json({
@@ -152,9 +163,9 @@ const updateTodoStatus = async (req, res) =>{
       })
     }
 
-    const updateTodo = await todoService.updateTodoStatus(id, status);
+    const updatedTodo = await todoService.updateTodoStatus(id, status);
 
-    if(!updateTodo){
+    if(!updatedTodo){
       return res.status(404).json({
         success : false,
         message : "Todo not found",
@@ -164,10 +175,12 @@ const updateTodoStatus = async (req, res) =>{
     res.status(200).json({
       success : true,
       message : "Todo status updated successfully",
-      data : updateTodo,
+      data : updatedTodo,
     });
 
   }catch (error){
+
+    console.error(error);
 
     if(error.name === "CastError"){
       return res.status(400).json({
@@ -178,7 +191,8 @@ const updateTodoStatus = async (req, res) =>{
 
     res.status(500).json({
       success : false,
-      message : error.message,
+      message : "Unable to update todo.",
+      
     });
   }
 };
@@ -187,9 +201,9 @@ const deleteTodo = async (req, res) => {
   try{
     const {id} = req.params;
 
-    const deleteTodo = await todoService.deleteTodo(id);
+    const deletedTodo = await todoService.deleteTodo(id);
 
-    if(!deleteTodo){
+    if(!deletedTodo){
       return res.status(400).json({
         success : false,
         message : "Todo not found",
@@ -201,6 +215,8 @@ const deleteTodo = async (req, res) => {
       message : " Todo deleted successfully",
     });
   }catch (error){
+
+    console.error(error);
 
     if(error.name === "CastError"){
       return res.status(400).json({
@@ -227,6 +243,7 @@ const searchTodos = async (req, res) => {
       });
     }
 
+    // Search todos by title
     const todos = await todoService.searchTodos(title);
 
     res.status(200).json({
@@ -235,6 +252,8 @@ const searchTodos = async (req, res) => {
       data : todos,
     });
   }catch (error){
+    console.error(error);
+
     res.status(500).json({
       success : false,
       message : error.message,
