@@ -90,7 +90,7 @@ Todo-App
 ### Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/AnupamVishwkarma/To-Do-List.git
 ```
 
 Go to project folder
@@ -180,7 +180,9 @@ http://localhost:5173
 
 ## Screenshots
 
-(./screenshot/home.png)
+### Home Page
+
+![Home Page](./screenshots/home.png)
 
 ---
 
