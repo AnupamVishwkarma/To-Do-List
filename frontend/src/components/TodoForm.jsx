@@ -5,6 +5,7 @@ function TodoForm({fetchTodos, editTodo, setEditTodo}){
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
+    // Fill the form when editing an existing todo
     useEffect(() => {
         if(editTodo){
             setTitle(editTodo.title);
@@ -12,6 +13,7 @@ function TodoForm({fetchTodos, editTodo, setEditTodo}){
         }
     }, [editTodo]);
 
+    // Submit form for add or update operation
     const handleSubmit = async (e) => {
         e.preventDefault();
 

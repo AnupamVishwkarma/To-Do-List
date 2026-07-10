@@ -2,6 +2,8 @@ import api from "../services/api"
 
 
 function TodoItem({todo, fetchTodos, setEditTodo,}){
+    
+    // Delete selected todo after confirmation
     const handleDelete = async () => {
         const confirmDelete = window.confirm(
             "Are you sure you want to delete this todo?"
@@ -19,6 +21,7 @@ function TodoItem({todo, fetchTodos, setEditTodo,}){
         }
     };
 
+    // Toggle todo status between Pending and Completed
     const handleStatusChange = async () => {
         try{
             const newStatus = todo.status === "Pending" ? "Completed" : "Pending";

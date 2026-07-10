@@ -9,6 +9,7 @@ function TodoList() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
 
+    // Fetch latest todos from backend
     const fetchTodos = async () => {
         try{
             const response = await api.get("/todos");
@@ -37,6 +38,7 @@ function TodoList() {
         }
     };
 
+    // Load todos when the component is rendered
     useEffect(() => {
         const delay = setTimeout(() => {
             searchTodos();
