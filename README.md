@@ -182,7 +182,7 @@ http://localhost:5173
 
 ### Home Page
 
-![Home Page](./screenshots/home.png)
+<img src="./screenshots/home.png" alt="Home Page" width="700"/>
 
 ---
 
