@@ -61,13 +61,25 @@ function TodoForm({fetchTodos, editTodo, setEditTodo}){
             <form action="" onSubmit={handleSubmit}>
                 <input type="text" className="form-control mb-3" placeholder="Enter title" value={title} onChange={(e) => setTitle(e.target.value)} required />
                 <textarea name="" id="" className="form-control mb-3" placeholder="Enter description" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
-                {editTodo && (
-                    <button type="button" className="btn btn-secondary ms-2" onClick={() =>{
-                        setEditTodo(null);
-                        setTitle("");
-                        setDescription("");
-                    }}>Cancel</button>
-                )}
+                <div className="mt-3">
+                    <button type="submit" className="btn btn-primary">
+                        {editTodo ? "Update Todo" : "Add Todo"}
+                    </button>
+
+                    {editTodo && (
+                        <button
+                        type="button"
+                        className="btn btn-secondary ms-2"
+                        onClick={() => {
+                            setEditTodo(null);
+                            setTitle("");
+                            setDescription("");
+                        }}
+                        >
+                        Cancel
+                        </button>
+                    )}
+                </div>
             </form>
         </div>
     );
