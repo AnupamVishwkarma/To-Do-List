@@ -1,76 +1,125 @@
+// importing the mongoose model
 const Todo = require("../models/Todo");
 
-// Create a new todo
+// function to create a todo
 const createTodo = async (todoData) => {
-    const todo = new Todo({
-        title: todoData.title,
-        description: todoData.description,
-    });
+    try {
+        // validating manually if title exists
+        if (!todoData.title) {
+            console.log("Title is missing in service!");
+            throw new Error("Title is required");
+        }
 
-    await todo.save();
+        // creating new instance
+        const newTodo = new Todo({
+            title: todoData.title,
+            description: todoData.description,
+            status: todoData.status || "Pending" // default status if user doesnt pass
+        });
 
-    return todo;
+        // saving to db
+        const savedTodo = await newTodo.save();
+        console.log("Saved todo in DB:", savedTodo._id);
+        
+        return savedTodo;
+    } catch (err) {
+        console.log("Error in createTodo service:", err.message);
+        throw err; // passing error back to controller
+    }
 };
 
-// Get all todos (latest first)
+// get all todos list
 const getAllTodos = async () => {
-    const todos = await Todo.find().sort({ createdAt: -1 });
-
-    return todos;
+    try {
+        // fetching all data and sorting by latest
+        const todos = await Todo.find().sort({ createdAt: -1 });
+        console.log("Total todos fetched:", todos.length);
+        return todos;
+    } catch (err) {
+        console.log("Failed to fetch todos from DB:", err);
+        throw err;
+    }
 };
 
-// Get single todo using id
+// get single todo by mongo id
 const getTodoById = async (id) => {
-    const todo = await Todo.findById(id);
-
-    return todo;
+    try {
+        const todo = await Todo.findById(id);
+        
+        // checking if ID actually returned a document
+        if (!todo) {
+            console.log("No todo found with id:", id);
+            return null;
+        }
+        
+        return todo;
+    } catch (err) {
+        console.log("Error finding todo by id:", err);
+        throw err;
+    }
 };
 
-// Update title and description
+// update todo details
 const updateTodo = async (id, todoData) => {
-    const updatedTodo = await Todo.findByIdAndUpdate(
-        id,
-        todoData,
-        {
-            new: true,
-            runValidators: true,
-        }
-    );
+    try {
+        // update and get back new updated document
+        const updated = await Todo.findByIdAndUpdate(
+            id,
+            {
+                title: todoData.title,
+                description: todoData.description
+            },
+            { new: true }
+        );
 
-    return updatedTodo;
+        return updated;
+    } catch (err) {
+        console.log("Update failed:", err);
+        throw err;
+    }
 };
 
-// Update only todo status
+// update status only
 const updateTodoStatus = async (id, status) => {
-    const updatedTodo = await Todo.findByIdAndUpdate(
-        id,
-        { status },
-        {
-            new: true,
-            runValidators: true,
-        }
-    );
-
-    return updatedTodo;
+    try {
+        // checking status string
+        const updated = await Todo.findByIdAndUpdate(
+            id,
+            { status: status },
+            { new: true }
+        );
+        return updated;
+    } catch (err) {
+        console.log("Status update error:", err);
+        throw err;
+    }
 };
 
-// Delete todo
+// delete todo
 const deleteTodo = async (id) => {
-    const deletedTodo = await Todo.findByIdAndDelete(id);
-
-    return deletedTodo;
+    try {
+        const deleted = await Todo.findByIdAndDelete(id);
+        console.log("Deleted item:", id);
+        return deleted;
+    } catch (err) {
+        console.log("Delete error in service:", err);
+        throw err;
+    }
 };
 
-// Search todo by title
+// search function by title keyword
 const searchTodos = async (keyword) => {
-    const todos = await Todo.find({
-        title: {
-            $regex: keyword,
-            $options: "i",
-        },
-    }).sort({ createdAt: -1 });
-
-    return todos;
+    try {
+        // regex search for searchbar
+        const query = {
+            title: { $regex: keyword, $options: "i" }
+        };
+        const searchResults = await Todo.find(query);
+        return searchResults;
+    } catch (err) {
+        console.log("Search error:", err);
+        throw err;
+    }
 };
 
 module.exports = {
@@ -80,5 +129,5 @@ module.exports = {
     updateTodo,
     updateTodoStatus,
     deleteTodo,
-    searchTodos,
+    searchTodos
 };
